@@ -1,0 +1,131 @@
+/* =========================================================
+   OD Spa — Estilos de la página de agendar + modal
+   ========================================================= */
+
+.page-booking main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: calc(var(--header-h) + var(--space-5)) var(--space-4) var(--space-6);
+}
+
+.booking-head { margin-bottom: var(--space-4); }
+.booking-head .section__title { margin-bottom: var(--space-2); }
+
+.booking-grid { display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
+
+/* ---------- Resumen ---------- */
+.booking-summary {
+  padding: var(--space-3) var(--space-4);
+  height: fit-content;
+  position: sticky;
+  top: calc(var(--header-h) + 12px);
+}
+.booking-summary__title { font-size: 16px; margin: 0 0 var(--space-3); letter-spacing: .1em; text-transform: uppercase; }
+.booking-summary__list { display: flex; flex-direction: column; gap: var(--space-2); }
+.booking-summary__item {
+  display: flex; justify-content: space-between; gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px dashed var(--glass-border);
+  font-size: 14px;
+}
+.booking-summary__item:last-child { border-bottom: 0; padding-bottom: 0; }
+.booking-summary__item span:first-child { color: var(--fg-muted); }
+.booking-summary__empty { color: var(--fg-dim); font-size: 13px; }
+.booking-summary__time {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: var(--space-3); padding-top: var(--space-3);
+  border-top: 1px dashed var(--glass-border);
+  font-size: 14px; color: var(--fg-muted);
+}
+.booking-summary__time strong { color: var(--fg); font-weight: 400; }
+.booking-summary__total {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: var(--space-2); padding-top: var(--space-2);
+  border-top: 1px solid var(--glass-border);
+  font-size: 16px;
+}
+.booking-summary__edit {
+  display: inline-block; margin-top: var(--space-3);
+  font-size: 13px; color: var(--fg-dim); text-decoration: underline;
+  text-decoration-color: var(--glass-border);
+}
+.booking-summary__edit:hover { color: var(--fg); }
+
+/* ---------- Formulario ---------- */
+.booking-form-card { padding: var(--space-4); }
+.booking-form-card__title { font-size: 16px; margin: 0 0 var(--space-4); letter-spacing: .1em; text-transform: uppercase; }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--space-3); }
+.field-row { display: grid; gap: var(--space-3); grid-template-columns: 1fr; margin-bottom: 0; }
+@media (min-width: 720px) {
+  .field-row { grid-template-columns: 1fr 1fr; }
+  .booking-grid { grid-template-columns: minmax(260px, 1fr) 2fr; align-items: start; }
+}
+@media (min-width: 1024px) {
+  .booking-grid { grid-template-columns: 320px 1fr; gap: var(--space-5); }
+}
+
+.field label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted); }
+.field input,
+.field textarea {
+  font: inherit; color: var(--fg); background: rgba(255,255,255,.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px; min-height: 44px;
+  transition: border-color .15s ease, background .15s ease;
+  color-scheme: dark;
+}
+.field input:hover,
+.field textarea:hover { background: rgba(255,255,255,.06); }
+.field input:focus,
+.field textarea:focus { outline: none; border-color: var(--fg); background: rgba(255,255,255,.08); }
+.field input:invalid:not(:placeholder-shown) { border-color: rgba(255,107,107,.6); }
+.field textarea { resize: vertical; min-height: 88px; }
+
+.booking-submit { width: 100%; margin-top: var(--space-2); }
+.booking-legal { color: var(--fg-dim); font-size: 12px; margin: var(--space-3) 0 0; text-align: center; }
+.booking-legal a { text-decoration: underline; text-decoration-color: var(--glass-border); }
+.booking-submit[aria-busy="true"] { opacity: .6; pointer-events: none; }
+
+/* ---------- Modal ---------- */
+.modal {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-4);
+}
+.modal[hidden] { display: none; }
+.modal__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.modal__card {
+  position: relative; z-index: 1;
+  max-width: 480px; width: 100%;
+  padding: var(--space-5);
+  text-align: center;
+  animation: modalIn .25s ease;
+}
+@keyframes modalIn {
+  from { transform: translateY(12px) scale(.98); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+.modal__icon {
+  width: 56px; height: 56px; margin: 0 auto var(--space-3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255,255,255,.06);
+}
+.modal--error .modal__icon { color: #ff9b9b; border-color: rgba(255,107,107,.5); background: rgba(255,107,107,.08); }
+.modal--ok .modal__icon { color: #fff; }
+.modal__title { margin: 0 0 var(--space-2); font-size: 22px; }
+.modal__msg { margin: 0 0 var(--space-3); color: var(--fg-muted); font-size: 15px; line-height: 1.6; }
+.modal__ref { margin: 0 0 var(--space-3); font-size: 13px; color: var(--fg-dim); }
+.modal__ref code {
+  background: rgba(255,255,255,.08);
+  padding: 3px 8px; border-radius: 6px;
+  font-family: ui-monospace, monospace;
+}
+.modal__actions { display: flex; justify-content: center; gap: var(--space-2); }
