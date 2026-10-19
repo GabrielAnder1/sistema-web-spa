@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Panel de gestión — OD Spa</title>
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Roboto+Slab:wght@100;200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="./admin.css" />
+</head>
+<body class="page-admin">
+
+  <header class="site-header glass">
+    <a class="brand" href="../index.html" aria-label="OD Spa">
+      <span class="brand__mark" aria-hidden="true">OD</span>
+      <span class="brand__text">
+        <strong>OD Spa</strong>
+        <small>Panel de gestión</small>
+      </span>
+    </a>
+    <button id="btn-logout" class="btn btn-ghost" hidden>Cerrar sesión</button>
+  </header>
+
+  <main class="admin-wrap">
+    <section id="login-view" class="glass card admin-login" aria-labelledby="login-title">
+      <h1 id="login-title" class="section__title">Acceso al panel</h1>
+      <p class="section__sub">Introduce el token de administrador.</p>
+      <form id="login-form" autocomplete="off">
+        <div class="field">
+          <label for="token">Token</label>
+          <input id="token" name="token" type="password" required autocomplete="current-password" />
+        </div>
+        <p id="login-msg" class="status is-error" hidden></p>
+        <button type="submit" class="btn btn-primary admin-submit" id="btn-login">Entrar</button>
+      </form>
+    </section>
+
+    <section id="dash-view" class="admin-dash" hidden>
+      <div class="admin-tabs" role="tablist">
+        <button class="tab" data-view="list" aria-selected="true">📋 Lista</button>
+        <button class="tab" data-view="calendar" aria-selected="false">📅 Calendario</button>
+        <button class="tab" data-view="metrics" aria-selected="false">📊 Métricas</button>
+        <button class="tab" data-view="services" aria-selected="false">✂️ Servicios</button>
+      </div>
+
+      <!-- Vista Lista -->
+      <section id="view-list" class="view">
+        <header class="admin-head">
+          <h1 class="section__title">Citas</h1>
+          <div class="admin-tools">
+            <div class="filters" id="filters" role="tablist">
+              <button class="chip" data-status="Pendiente" aria-selected="true">Pendientes</button>
+              <button class="chip" data-status="Aprobada" aria-selected="false">Aprobadas</button>
+              <button class="chip" data-status="Completada" aria-selected="false">Completadas</button>
+              <button class="chip" data-status="Rechazada" aria-selected="false">Rechazadas</button>
+              <button class="chip" data-status="all" aria-selected="false">Todas</button>
+            </div>
+            <div class="admin-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px;flex-shrink:0;opacity:0.6;"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input id="search" type="search" placeholder="Buscar..." />
+            </div>
+            <div class="sorter">
+              <select id="sort-field" class="sorter__select">
+                <option value="Fecha Registro">Recientes</option>
+                <option value="Fecha Cita">Fecha cita</option>
+                <option value="Nombre">Nombre</option>
+                <option value="Total">Total</option>
+              </select>
+              <button class="icon-btn sorter__dir" id="sort-dir">↓</button>
+            </div>
+            <button class="btn btn-ghost" id="btn-export">⤓ Excel</button>
+            <button class="btn btn-ghost" id="btn-reload">↻</button>
+          </div>
+        </header>
+        <div id="dash-status" class="skeleton-text" hidden></div>
+        <div id="bookings" class="bookings"></div>
+        <nav id="pagination" class="pagination" hidden>
+          <button class="btn btn-ghost" id="pg-prev">←</button>
+          <span id="pg-info"></span>
+          <button class="btn btn-ghost" id="pg-next">→</button>
+        </nav>
+      </section>
+
+      <!-- Vista Calendario -->
+      <section id="view-calendar" class="view" hidden>
+        <header class="admin-head"><h1 class="section__title">Calendario</h1></header>
+        <div id="calendar-dashboard" class="calendar-dashboard" hidden>
+          <div class="cal-row">
+            <h3 class="cal-row-title">Próximas citas</h3>
+            <div id="cal-upcoming" class="cal-cards-strip"></div>
+          </div>
+          <div class="cal-row cal-row--split">
+            <div class="cal-month-wrap">
+              <h3 class="cal-row-title">Vista mensual</h3>
+              <div id="cal-month" class="cal-month-grid"></div>
+            </div>
+            <div class="cal-today-wrap">
+              <h3 class="cal-row-title" id="cal-selected-title">Hoy</h3>
+              <div id="cal-today" class="cal-today-list"></div>
+            </div>
+          </div>
+          <div class="cal-row">
+            <h3 class="cal-row-title">Próximos 7 días</h3>
+            <div id="cal-week" class="cal-week-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vista Métricas -->
+      <section id="view-metrics" class="view" hidden>
+        <header class="admin-head">
+          <h1 class="section__title">Métricas</h1>
+          <div class="metrics-filters">
+            <input id="m-desde" type="date" />
+            <input id="m-hasta" type="date" />
+            <button class="btn btn-primary" id="m-apply">Aplicar</button>
+          </div>
+        </header>
+        <div id="metrics" class="metrics" hidden>
+          <div class="metric-cards" id="metric-cards"></div>
+          <div class="metric-block glass"><h3>Citas por semana</h3><div id="metric-weeks" class="bars"></div></div>
+          <div class="metric-block glass"><h3>Top Servicios</h3><div id="metric-services" class="bars"></div></div>
+        </div>
+      </section>
+
+      <!-- Vista Servicios -->
+      <section id="view-services" class="view" hidden>
+        <header class="admin-head">
+          <h1 class="section__title">Servicios</h1>
+          <button class="btn btn-primary" id="btn-add-service">+ Nuevo</button>
+        </header>
+        <div id="services-list" class="services-list"></div>
+      </section>
+    </section>
+  </main>
+  <div id="toast" class="admin-toast" hidden></div>
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>
